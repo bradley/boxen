@@ -19,12 +19,16 @@ class people::bradley {
 
     include sublime_text_3::package_control
     sublime_text_3::package { 'GitGutter': source => 'jisaacks/GitGutter' }
+    sublime_text_3::package { 'ColorSublime': source => 'ColorSublime/ColorSublime-Plugin' }
 
     file { "${home_directory}/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings":
       source => 'puppet:///modules/people/bradley/User-Preferences.sublime-settings',
     }
     file { "${home_directory}/Library/Application Support/Sublime Text 3/Packages/Default/Preferences.sublime-settings":
       source => 'puppet:///modules/people/bradley/Default-Preferences.sublime-settings',
+    }
+    file { "${home_directory}/Library/Application Support/Sublime Text 3/Packages/gitmo.tmTheme":
+      source => 'puppet:///modules/people/bradley/gitmo.tmTheme',
     }
     exec {
       'ln -s "/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl" ~/bin/subl':
