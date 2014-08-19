@@ -1,6 +1,6 @@
 ###Getting Started
 
-Before you can setup your machine using Doxen, you'll need to do a couple prelimnary steps.
+Before you can setup your machine using Boxen, you'll need to do a couple prelimnary steps.
 
 1. Install XCode and the associated developer tools.
 2. Install Homebrew
