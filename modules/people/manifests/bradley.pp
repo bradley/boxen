@@ -19,15 +19,18 @@ class people::bradley {
 
     include sublime_text_3::package_control
     sublime_text_3::package { 'GitGutter': source => 'jisaacks/GitGutter' }
-    
+
     file { "${home_directory}/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings":
       source => 'puppet:///modules/people/bradley/User-Preferences.sublime-settings',
     }
-    exec { 
+    file { "${home_directory}/Library/Application Support/Sublime Text 3/Packages/Default/Preferences.sublime-settings":
+      source => 'puppet:///modules/people/bradley/Default-Preferences.sublime-settings',
+    }
+    exec {
       'ln -s "/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl" ~/bin/subl':
     }
 
-    osx::recovery_message { 'If found, please call 2147184671 or email bradley.j.griffith@gmail.com': }
+    osx::recovery_message { 'If found, please email bradley.j.griffith@gmail.com': }
     osx::global::expand_save_dialog
     osx::global::disable_autocorrect
     osx::global::tap_to_click
@@ -46,10 +49,12 @@ class people::bradley {
     }
 
     ## Git
+    git::config::global { 'alias.co': value => 'checkout' }
+    git::config::global { 'alias.gst': value => 'git status' }
     git::config::global { 'color.ui': value => 'true' }
     git::config::global { 'user.name': value => 'Bradley Griffith' }
     git::config::global { 'user.email': value => 'bradley.j.griffith@gmail.com' }
-    
+
     ## zsh config
     file { "${home_directory}/.zshrc":
       source => 'puppet:///modules/people/bradley/zshrc',
