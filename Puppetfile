@@ -49,7 +49,7 @@ github "inifile",     "1.1.1", :repo => "puppetlabs/puppetlabs-inifile"
 github "nginx",       "1.4.3"
 github "nodejs",      "3.8.1"
 github "openssl",     "1.0.0"
-github "phantomjs",   “2.3.0”
+github "phantomjs",   "2.3.0"
 github "pkgconfig",   "1.0.0"
 github "repository",  "2.3.0"
 github "ruby",        "8.1.2"
