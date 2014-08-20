@@ -16,35 +16,35 @@ class people::bradley {
     include skype
     include slack
     include spotify
-    include sublime_text_3
+    include sublime_text_2
     include zsh
     include ohmyzsh
 
-    include sublime_text_3::package_control
-    sublime_text_3::package { 'GitGutter': source => 'jisaacks/GitGutter' }
-    sublime_text_3::package { 'ColorSublime': source => 'ColorSublime/ColorSublime-Plugin' }
+    #include sublime_text_3::package_control
+    sublime_text_2::package { 'GitGutter': source => 'jisaacks/GitGutter' }
+    sublime_text_2::package { 'ColorSublime': source => 'ColorSublime/ColorSublime-Plugin' }
     exec { 'Own base':
       command => "chmod 755 /Library && chmod 755 '${base}'"
     }
     exec { 'Idempotent creation of User preferences directory':
-      command => "mkdir -p '${base}/Sublime Text/Packages/User/Preferences' && mkdir -p '${base}/Sublime Text/Packages/Default/Preferences'",
+      command => "mkdir -p '${base}/Sublime Text 2/Packages/User/Preferences' && mkdir -p '${base}/Sublime Text 2/Packages/Default/Preferences'",
       user => root,
     }
-    file { "${base}/Sublime Text/Packages/User/Preferences.sublime-settings":
-      require => Class["sublime_text_3"],
+    file { "${base}/Sublime Text 2/Packages/User/Preferences.sublime-settings":
+      require => Class["sublime_text_2"],
       source => 'puppet:///modules/people/bradley/User-Preferences.sublime-settings',
     }
-    file { "${base}/Sublime Text/Packages/Default/Preferences.sublime-settings":
-      require => Class["sublime_text_3"],
+    file { "${base}/Sublime Text 2/Packages/Default/Preferences.sublime-settings":
+      require => Class["sublime_text_2"],
       source => 'puppet:///modules/people/bradley/Default-Preferences.sublime-settings',
     }
-    file { "${base}/Sublime Text/Packages/gitmo.tmTheme":
-      require => Class["sublime_text_3"],
+    file { "${base}/Sublime Text 2/Packages/gitmo.tmTheme":
+      require => Class["sublime_text_2"],
       source => 'puppet:///modules/people/bradley/gitmo.tmTheme',
     }
     file { "/bin/subl":
       ensure => link,
-      target => "/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl"
+      target => "/Applications/Sublime Text 2.app/Contents/SharedSupport/bin/subl"
     }
 
     Boxen::Osx_defaults {
