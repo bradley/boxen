@@ -1,4 +1,7 @@
 class people::bradley {
+    $home_directory = '/'    
+    $base = "/Library/Application Support"
+
     include chrome
     include divvy
     include dropbox
@@ -6,51 +9,78 @@ class people::bradley {
     include firefox
     include imagemagick
     include iterm2::stable
+    include java
     include mysql
-    include osx
     include postgresql
     include redis
     include skype
     include slack
     include spotify
-    include sublime_text_3
+    include sublime_text_2
     include zsh
     include ohmyzsh
 
-    include sublime_text_3::package_control
-    sublime_text_3::package { 'GitGutter': source => 'jisaacks/GitGutter' }
-    sublime_text_3::package { 'ColorSublime': source => 'ColorSublime/ColorSublime-Plugin' }
-
-    file { "${home_directory}/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings":
+    #include sublime_text_2::package_control
+    sublime_text_2::package { 'GitGutter': source => 'jisaacks/GitGutter' }
+    sublime_text_2::package { 'ColorSublime': source => 'ColorSublime/ColorSublime-Plugin' }
+    exec { 'Own base':
+      command => "chmod 755 /Library && chmod 755 '${base}'"
+    }
+    exec { 'Idempotent creation of User preferences directory':
+      command => "mkdir -p '${base}/Sublime Text 2/Packages/User/Preferences' && mkdir -p '${base}/Sublime Text 2/Packages/Default/Preferences'",
+      user => root,
+    }
+    file { "${base}/Sublime Text 2/Packages/User/Preferences.sublime-settings":
+      require => Class["sublime_text_2"],
       source => 'puppet:///modules/people/bradley/User-Preferences.sublime-settings',
     }
-    file { "${home_directory}/Library/Application Support/Sublime Text 3/Packages/Default/Preferences.sublime-settings":
+    file { "${base}/Sublime Text 2/Packages/Default/Preferences.sublime-settings":
+      require => Class["sublime_text_2"],
       source => 'puppet:///modules/people/bradley/Default-Preferences.sublime-settings',
     }
-    file { "${home_directory}/Library/Application Support/Sublime Text 3/Packages/gitmo.tmTheme":
+    file { "${base}/Sublime Text 2/Packages/gitmo.tmTheme":
+      require => Class["sublime_text_2"],
       source => 'puppet:///modules/people/bradley/gitmo.tmTheme',
     }
-    exec {
-      'ln -s "/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl" ~/bin/subl':
+    #exec { 'Link subl command':
+    #  command => "ln -s '/Applications/Sublime Text 2.app/Contents/SharedSupport/bin/subl' ~/bin/subl",
+    #  ensure => link,
+    #}
+     
+    file { "/bin/subl":
+      ensure => link,
+      target => "/Applications/Sublime Text 2.app/Contents/SharedSupport/bin/subl"
+    }
+
+
+    Boxen::Osx_defaults {
+      user => $::luser,
     }
 
     osx::recovery_message { 'If found, please email bradley.j.griffith@gmail.com': }
-    osx::global::expand_save_dialog
-    osx::global::disable_autocorrect
-    osx::global::tap_to_click
-    osx::finder::show_external_hard_drives_on_desktop
-    osx::finder::show_removable_media_on_desktop
-    osx::finder::empty_trash_securely
-    osx::finder::unhide_library
-    osx::disable_app_quarantine
-    ## The amount of time (ms) before a key repeats (defaults to 35)
+    
+    include osx::global::disable_autocorrect
+    include osx::global::expand_save_dialog
+    include osx::global::disable_autocorrect
+    include osx::global::tap_to_click
+    include osx::finder::show_external_hard_drives_on_desktop
+    include osx::finder::show_removable_media_on_desktop
+    include osx::finder::empty_trash_securely
+    include osx::finder::unhide_library
+    include osx::disable_app_quarantine
+    
     class { 'osx::global::key_repeat_delay':
-      delay => 10
+      delay => 10,
     }
-    ## The amount of time (ms) befor a key repeate 'presses' (defaults to 0)
+    
     class { 'osx::global::key_repeat_rate':
-      rate => 2
+      rate => 0,
     }
+   
+    class { 'osx::dock::hot_corners':
+      bottom_left => "Start Screen Saver",
+    }    
+
 
     ## Git
     git::config::global { 'alias.co': value => 'checkout' }
@@ -60,10 +90,20 @@ class people::bradley {
     git::config::global { 'user.email': value => 'bradley.j.griffith@gmail.com' }
 
     ## zsh config
-    file { "${home_directory}/.zshrc":
+    file { "${home_directory}.zshrc":
       source => 'puppet:///modules/people/bradley/zshrc',
     }
 
+    ## zsh config
+    file { "${home_directory}.vimrc":
+      source => 'puppet:///modules/people/bradley/vimrc',
+    }
+
+    ## Place iterm2 theme on desktop.
+    file { "/Users/bradley/Desktop/saturn.itermcolors":
+      source => 'puppet:///modules/people/bradley/saturn.itermcolors'
+    }
+    
     ## This is how to install Homebrew packages
     ## You can get a list of your current packages with
     ## `brew list`
@@ -77,6 +117,4 @@ class people::bradley {
       ]:
       ensure => present,
     }
-
-    $home = "/Users/${::boxen_user}"
 }
