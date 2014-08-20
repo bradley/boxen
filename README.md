@@ -1,3 +1,11 @@
+###Main Important Stuff
+1. State any [package](https://github.com/boxen) you wish to include in your Puppetfile in the following format:
+```
+github "package_name", "version number"
+```
+2. Re-state the package in `modules/people/manifests/your_github_name.pp` and add any additional configuration there.
+3. There are examples in `modules/people/manifests/bradley.pp` of how to include and place additional files.
+
 ###Getting Started
 
 Before you can setup your machine using Boxen, you'll need to do a couple prelimnary steps.
