@@ -1,6 +1,6 @@
 class people::bradley {
     $home_directory = '/'    
-    $base = "/Library/Application Support"
+    $base = "/Users/bradley/Library/Application Support"
 
     include chrome
     include divvy
@@ -23,12 +23,11 @@ class people::bradley {
     #include sublime_text_3::package_control
     sublime_text_2::package { 'GitGutter': source => 'jisaacks/GitGutter' }
     sublime_text_2::package { 'ColorSublime': source => 'ColorSublime/ColorSublime-Plugin' }
-    exec { 'Own base':
-      command => "chmod 755 /Library && chmod 755 '${base}'"
-    }
+    #exec { 'Own base':
+    #  command => "chmod 755 /Library && chmod 755 '${base}'"
+    #}
     exec { 'Idempotent creation of User preferences directory':
-      command => "mkdir -p '${base}/Sublime Text 2/Packages/User/Preferences' && mkdir -p '${base}/Sublime Text 2/Packages/Default/Preferences'",
-      user => root,
+      command => "mkdir -p '${base}/Sublime Text 2/Packages/User' && mkdir -p '${base}/Sublime Text 2/Packages/Default'",
     }
     file { "${base}/Sublime Text 2/Packages/User/Preferences.sublime-settings":
       require => Class["sublime_text_2"],
@@ -41,6 +40,11 @@ class people::bradley {
     file { "${base}/Sublime Text 2/Packages/gitmo.tmTheme":
       require => Class["sublime_text_2"],
       source => 'puppet:///modules/people/bradley/gitmo.tmTheme',
+    }
+    file { "${base}/Sublime Text 2/Packages/Theme - Flatland":
+      require => Class["sublime_text_2"],
+      source => 'puppet:///modules/people/bradley/Theme - Flatland',
+      recurse => true,
     }
     file { "/bin/subl":
       ensure => link,
