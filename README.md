@@ -28,3 +28,11 @@ If you get the error shown below, you may need to run `source /opt/boxen/env.sh`
 ```
 
 Expect hiccups.
+
+
+###Helpful Notes
+
+1. If you run into a situation where you need to re-run `./script/boxen` and want it to also reinstall an application it has already installed, you need to rm boxen's record of the previous install. For example:
+```
+sudo rm -rf /var/db/.puppet_appdmg_installed_SublimeText2
+```
