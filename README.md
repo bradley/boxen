@@ -44,5 +44,4 @@ Expect hiccups.
 ```
 sudo rm -rf /var/db/.puppet_appdmg_installed_SublimeText2
 ```
-
 2. I ran into issues with mysql so maybe this will help you: When attempting to create a database in rails using mysql and running `rake db:create` I would get an error saying something along the lines of 'couldn't create database for adapter'. To fix this I needed to do two things. First, I needed to add `socket: /opt/boxen/data/mysql/socket` to my `database.yml` file. Additionally, I needed to run `sudo env ARCHFLAGS="-arch i386 x86_64" gem install mysql -- --with-mysql-dir=/opt/boxen/homebrew/Cellar/mysql/5.6.20 --with-mysql-config=/opt/boxen/homebrew/Cellar/mysql/5.6.20/bin/mysql_config`. Also note that to find the path to the socket, I ran `mysqladmin variables` and read through the output.
