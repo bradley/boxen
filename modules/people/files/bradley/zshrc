@@ -32,8 +32,6 @@ alias gut="git"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 plugins=(git)
 
-source $ZSH/oh-my-zsh.sh
-
 # Customize to your needs... (use subl to open sublime text and edit)
 export EDITOR='subl -w'
 
@@ -56,3 +54,6 @@ xc(){
   echo "Found $x_proj"
   open "$x_proj"
 }
+
+source /opt/boxen/env.sh
+source $ZSH/oh-my-zsh.sh
