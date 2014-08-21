@@ -57,6 +57,7 @@ node default {
   include git
   include hub
   include nginx
+  include ruby
 
   # fail if FDE is not enabled
   if $::root_encrypted == 'no' {
@@ -67,6 +68,9 @@ node default {
   include nodejs::v0_6
   include nodejs::v0_8
   include nodejs::v0_10
+  class { 'nodejs::global':
+    version => 'v0.10'
+  }
 
   # default ruby versions
   ruby::version { '1.9.3': }
